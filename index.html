@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link rel="shortcut icon" href="imgs/icon.png" type="image/x-icon">
+    <title>Jogo da velha</title>
+</head>
+<body>
+    <div class="game-screen" id="game-screen">
+
+        <div class="start-screen" id="start-screen">
+            <h1>Jogo da velha</h1>
+            <button id="IniciaJogo">Jogar</button>
+            <p>PetersonDev&copy; 2023</p>
+        </div><!--start-game-->
+
+        <div class="game" id="game">
+
+            <h2 id="QuemComeca"></h2>
+
+            <div class="row">
+                <div onclick="jogar(0)" class="top left"></div>
+                <div onclick="jogar(1)" class="top center"></div>
+                <div onclick="jogar(2)" class="top right"></div>
+            </div><!--row-->
+            
+            <div class="row">
+                <div onclick="jogar(3)" class="left"></div>
+                <div onclick="jogar(4)"></div>
+                <div onclick="jogar(5)" class="right"></div>
+            </div><!--row-->
+           
+            <div class="row">
+                <div onclick="jogar(6)" class="left bottom"></div>
+                <div onclick="jogar(7)" class="bottom"></div>
+                <div onclick="jogar(8)" class="right bottom"></div>
+            </div><!--row-->
+            
+        </div><!--Game-->
+
+        <div class="result-screen" id="result-screen">
+            <h2 id="TextoResultado"></h2>
+            <button id="reiniciaJogo" onclick="StartGame()">Jogar Novamente</button>
+            <p>PetersonDev&copy; 2023</p>
+        </div><!--result-screen-->
+
+    </div><!--game-screen-->
+
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: #232323;
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.game-screen{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-screen{
+    display: flex;
+    flex-direction: column;   
+    justify-content: center;
+    align-items: center;
+    transition: 1s;
+}
+
+.start-screen h1{
+    font-size: 40pt;
+}
+
+.start-screen h1,button,p{
+    margin: 10px 0;
+}
+
+.start-screen button {
+   background: none;
+    border: none;
+    border: 1px solid #fff;
+    font-size: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    color:  #fff;
+    cursor: pointer;
+    transition: .5s;
+}
+
+.start-screen button:hover{
+    background: #fff;
+    color: #000;
+}
+
+#game{
+    display: none;
+    opacity: 0;
+    transition: 1s;
+    text-align: center;
+}
+
+#game h2{
+    margin-bottom: 30px;
+    font-size: 20pt;
+}
+
+#game .row{
+    display: flex;
+}
+
+#game .row div{
+    width: 100px;
+    height: 100px;
+    border: 1px solid #fff;
+    cursor: pointer;
+    font-size: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#game .row .top{
+    border-top: none;
+}
+
+#game .row .right {
+    border-right: none;
+}
+
+#game .row .left{
+    border-left: none;
+}
+
+#game .row .bottom{
+    border-bottom: none;
+}
+
+#result-screen{
+    text-align: center;
+    display: none;
+    transition: 1s;
+}
+
+#result-screen h2{
+    color: #fff;
+    font-size: 40pt;
+}
+
+#result-screen h2, button, p{
+    margin: 10px 0;
+}
+
+#result-screen button{
+    background: none;
+    border: none;
+    border: 1px solid #fff;
+    font-size: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    color:  #fff;
+    cursor: pointer;
+    transition: .5s;
+}
+
+#result-screen button:hover{
+    background: #fff;
+    color: #000;
+}
