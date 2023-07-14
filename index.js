@@ -324,7 +324,7 @@ function CPUJoga() {
             } else if (Posicao[0] == "X" && Posicao[8] == "X" && Posicao[4] == "") {
                 Posicao[4] = "O"
                 Casas[4].appendChild(imgO)
-            } else if (Posicao[8] == "X" && Posicao[5] == "X" && Posicao[0] == "") {
+            } else if (Posicao[8] == "X" && Posicao[4] == "X" && Posicao[0] == "") {
                 Posicao[0] = "O"
                 Casas[0].appendChild(imgO)
             }
