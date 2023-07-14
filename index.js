@@ -1,6 +1,7 @@
-var TelaInicio // Variável usada para fazer mudanças na tela de início
-var TelaJogo // Variável usada para fazer mudanças na tela de jogo
-var TelaResultado // Variável usada para fazer mudanças na tela de resultado
+var TelaInicio // Variável usada para manipular a tela de início
+var TelaJogo // Variável usada para manipular a tela de jogo
+var TelaResultado // Variável usada para manipular a tela de resultado
+var TelaDificuldade // Variável usada para manipular a tela de escolha de dificuldade
 var QuemComecaTexto // Variável para fazer mudanças no texto que mostra quem começa jogando
 var Posicao // Variável que guarda as posições jogadas
 var Casas // Variável que guarda as divs das casas do jogo
@@ -9,8 +10,9 @@ var QuemComeca // Variável que define quem começa o jogo
 var jogando // Variável que diz se o jogo está rolando ou não
 var mensagem // Variável que recebe a mensagem referente ao resultado do jogo
 var finalizado // Variável que vai dizer se o jogo já possui um resultado
+var dificuldade // Dificuldade do jogo
 
-function StartGame() {
+function Iniciar() {
     
     Posicao = ["","","","","","","","",""]
     Casas = document.querySelectorAll(".row div") 
@@ -19,29 +21,44 @@ function StartGame() {
         Casas[i].innerHTML = ""
         Casas[i].style.cursor = "pointer"
     }
-
-    jogando = true 
-    finalizado = false
-    QuemComeca = Math.round(Math.random()) 
-    QuemJoga = QuemComeca 
     
     TelaInicio = document.getElementById("start-screen")
     TelaResultado = document.getElementById("result-screen") 
-    TelaJogo = document.getElementById("game") 
-    QuemComecaTexto = document.getElementById("QuemComeca") 
+    TelaDificuldade = document.getElementById("SelectDifficulty")
+    TelaJogo = document.getElementById("game")
+    QuemComecaTexto = document.getElementById("QuemComeca")
 
     TelaInicio.style.opacity = "0"
-    QuemComecaTexto.style.opacity = "1"
 
     setTimeout(() => {
         TelaInicio.style.display = "none"
         TelaResultado.style.display = "none"
+        TelaDificuldade.style.display = "block"
+        setTimeout(() => {
+            TelaDificuldade.style.opacity = "1"
+        }, 100)
+    }, 1000)
+
+}
+
+function IniciarJogo(NivelDificuldade) {
+
+    dificuldade = NivelDificuldade
+    jogando = true
+    finalizado = false
+    QuemComeca = Math.round(Math.random())
+    QuemJoga = QuemComeca
+
+    QuemComecaTexto.style.opacity = "1"
+    TelaDificuldade.style.opacity = "0"
+
+    setTimeout(() => {
+        TelaDificuldade.style.display = "none"
         TelaJogo.style.display = "block"
         setTimeout(() => {
             TelaJogo.style.opacity = "1"
         }, 10)
     }, 1000)
-
 
     if (QuemComeca == 1) {
 
@@ -59,7 +76,6 @@ function StartGame() {
             QuemComecaTexto.style.opacity = "0"
         }, 3000)
     }
-
 }
 
 function jogar(Position) {
@@ -78,7 +94,9 @@ function jogar(Position) {
 
             verifica()
             QuemJoga = 1
-            CPUJoga()
+            setTimeout(() => {
+                CPUJoga()
+            }, 500)
         } else {
             alert("Jogada indisponível")
         }
@@ -87,8 +105,8 @@ function jogar(Position) {
 
 function CPUJoga() {
     if (jogando && QuemJoga == 1) {
-        let JogadaCPU = Math.round(Math.random() * 9)
 
+        let JogadaCPU
         let imgO = document.createElement("img")
         let stylesImg = document.createAttribute("style")
 
@@ -96,17 +114,251 @@ function CPUJoga() {
         imgO.setAttributeNode(stylesImg)
         imgO.src = "imgs/O.png"
 
-        if (Posicao[JogadaCPU] == "") {
-            Posicao[JogadaCPU] = "O"
-            Casas[JogadaCPU].appendChild(imgO)
-            Casas[JogadaCPU].style.cursor = "default"
+        if (dificuldade == 1) {
+            JogadaCPU = Math.round(Math.random() * 9)
+
+            if (Posicao[JogadaCPU] == "") {
+                Posicao[JogadaCPU] = "O"
+                Casas[JogadaCPU].appendChild(imgO)
+                Casas[JogadaCPU].style.cursor = "default"
+                verifica()
+                QuemJoga = 0
+            } else {
+                CPUJoga()
+            }
+        } else {
+
+           // Algoritmo de ataque
+           // LINHA 1
+           if (Posicao[0] == "O" && Posicao[1] == "O" && Posicao[2] == "") {
+                Posicao[2] = "O"
+                Casas[2].appendChild(imgO)
+           } else if (Posicao[0] == "O" && Posicao[2] == "O" && Posicao[1] == "") {
+                Posicao[1] = "O"
+                Casas[1].appendChild(imgO)
+           } else if (Posicao[1] == "O" && Posicao[2] == "O" && Posicao[0] == "") {
+                Posicao[0] = "O"
+                Casas[0].appendChild(imgO)
+           }
+            
+           // LINHA 2
+            else if (Posicao[3] == "O" && Posicao[4] == "O" && Posicao[5] == "") {
+                Posicao[5] = "O"
+                Casas[5].appendChild(imgO)
+            } else if (Posicao[5] == "O" && Posicao[4] == "O" && Posicao[3] == "") {
+                Posicao[3] = "O"
+                Casas[3].appendChild(imgO)
+            } else if (Posicao[5] == "O" && Posicao[3] == "O" && Posicao[4] == "") {
+                Posicao[4] = "O"
+                Casas[4].appendChild(imgO)
+            }
+
+            
+            // LINHA 3
+            else if (Posicao[6] == "O" && Posicao[7] == "O" && Posicao[8] == "") {
+                Posicao[8] = "O"
+                Casas[8].appendChild(imgO)
+            } else if (Posicao[8] == "O" && Posicao[7] == "O" && Posicao[6] == "") {
+                Posicao[6] = "O"
+                Casas[6].appendChild(imgO)
+            } else if (Posicao[6] == "O" && Posicao[8] == "O" && Posicao[7] == "") {
+                Posicao[7] = "O"
+                Casas[7].appendChild(imgO)
+            }
+
+
+            // COLUNAS
+
+            // COLUNA 1
+            else if (Posicao[0] == "O" && Posicao[3] == "O" && Posicao[6] == "") {
+                Posicao[6] = "O"
+                Casas[6].appendChild(imgO)
+            } else if (Posicao[0] == "O" && Posicao[6] == "O" && Posicao[3] == "") {
+                    Posicao[3] = "O"
+                    Casas[3].appendChild(imgO)
+            } else if (Posicao[6] == "O" && Posicao[3] == "O" && Posicao[0] == "") {
+                    Posicao[0] = "O"
+                    Casas[0].appendChild(imgO)
+            }
+
+
+            // COLUNA 2
+            else if (Posicao[1] == "O" && Posicao[4] == "O" && Posicao[7] == "") {
+                Posicao[7] = "O"
+                Casas[7].appendChild(imgO)
+            } else if (Posicao[7] == "O" && Posicao[4] == "O" && Posicao[1] == "") {
+                    Posicao[1] = "O"
+                    Casas[1].appendChild(imgO)
+            } else if (Posicao[1] == "O" && Posicao[7] == "O" && Posicao[4] == "") {
+                    Posicao[4] = "O"
+                    Casas[4].appendChild(imgO)
+            }
+
+            
+            // COLUNA 3
+            else if (Posicao[2] == "O" && Posicao[5] == "O" && Posicao[8] == "") {
+                Posicao[8] = "O"
+                Casas[8].appendChild(imgO)
+            } else if (Posicao[8] == "O" && Posicao[5] == "O" && Posicao[2] == "") {
+                    Posicao[2] = "O"
+                    Casas[2].appendChild(imgO)
+            } else if (Posicao[2] == "O" && Posicao[8] == "O" && Posicao[5] == "") {
+                    Posicao[5] = "O"
+                    Casas[5].appendChild(imgO)
+            }
+
+            //DIAGONAIS
+
+            //DIAGONAL 1
+            else if (Posicao[0] == "O" && Posicao[4] == "O" && Posicao[8] == "") {
+                Posicao[8] = "O"
+                Casas[8].appendChild(imgO)
+            } else if (Posicao[0] == "O" && Posicao[8] == "O" && Posicao[4] == "") {
+                    Posicao[4] = "O"
+                    Casas[4].appendChild(imgO)
+            } else if (Posicao[8] == "O" && Posicao[5] == "O" && Posicao[0] == "") {
+                    Posicao[0] = "O"
+                    Casas[0].appendChild(imgO)
+            }
+
+            //DIAGONAL 2
+            else if (Posicao[2] == "O" && Posicao[4] == "O" && Posicao[6] == "") {
+                Posicao[6] = "O"
+                Casas[6].appendChild(imgO)
+            } else if (Posicao[2] == "O" && Posicao[6] == "O" && Posicao[4] == "") {
+                    Posicao[4] = "O"
+                    Casas[4].appendChild(imgO)
+            } else if (Posicao[4] == "O" && Posicao[6] == "O" && Posicao[2] == "") {
+                    Posicao[2] = "O"
+                    Casas[2].appendChild(imgO)
+            }
+
+
+
+            // ALGORÍTIMO DE DEFESA
+
+            // LINHA 1
+            else if (Posicao[0] == "X" && Posicao[1] == "X" && Posicao[2] == "") {
+                Posicao[2] = "O"
+                Casas[2].appendChild(imgO)
+            } else if (Posicao[0] == "X" && Posicao[2] == "X" && Posicao[1] == "") {
+                Posicao[1] = "O"
+                Casas[1].appendChild(imgO)
+            } else if (Posicao[1] == "X" && Posicao[2] == "X" && Posicao[0] == "") {
+                Posicao[0] = "O"
+                Casas[0].appendChild(imgO)
+        
+            }
+            // LINHA 2
+            else if (Posicao[3] == "X" && Posicao[4] == "X" && Posicao[5] == "") {
+                Posicao[5] = "O"
+                Casas[5].appendChild(imgO)
+            } else if (Posicao[5] == "X" && Posicao[4] == "X" && Posicao[3] == "") {
+                Posicao[3] = "O"
+                Casas[3].appendChild(imgO)
+            } else if (Posicao[5] == "X" && Posicao[3] == "X" && Posicao[4] == "") {
+                Posicao[4] = "O"
+                Casas[4].appendChild(imgO)
+            }
+
+        
+            // LINHA 3
+            else if (Posicao[6] == "X" && Posicao[7] == "X" && Posicao[8] == "") {
+                Posicao[8] = "O"
+                Casas[8].appendChild(imgO)
+            } else if (Posicao[8] == "X" && Posicao[7] == "X" && Posicao[6] == "") {
+                Posicao[6] = "O"
+                Casas[6].appendChild(imgO)
+            } else if (Posicao[6] == "X" && Posicao[8] == "X" && Posicao[7] == "") {
+                Posicao[7] = "O"
+                Casas[7].appendChild(imgO)
+            }
+
+
+            // COLUNAS
+
+            // COLUNA 1
+            else if (Posicao[0] == "X" && Posicao[3] == "X" && Posicao[6] == "") {
+                Posicao[6] = "O"
+                Casas[6].appendChild(imgO)
+            } else if (Posicao[0] == "X" && Posicao[6] == "X" && Posicao[3] == "") {
+                Posicao[3] = "O"
+                Casas[3].appendChild(imgO)
+            } else if (Posicao[6] == "X" && Posicao[3] == "X" && Posicao[0] == "") {
+                Posicao[0] = "O"
+                Casas[0].appendChild(imgO)
+            }
+
+
+            // COLUNA 2
+            else if (Posicao[1] == "X" && Posicao[4] == "X" && Posicao[7] == "") {
+                Posicao[7] = "O"
+                Casas[7].appendChild(imgO)
+            } else if (Posicao[7] == "X" && Posicao[4] == "X" && Posicao[1] == "") {
+                Posicao[1] = "O"
+                Casas[1].appendChild(imgO)
+            } else if (Posicao[1] == "X" && Posicao[7] == "X" && Posicao[4] == "") {
+                Posicao[4] = "O"
+                Casas[4].appendChild(imgO)
+            }
+
+            
+            // COLUNA 3
+            else if (Posicao[2] == "X" && Posicao[5] == "X" && Posicao[8] == "") {
+                Posicao[8] = "O"
+                Casas[8].appendChild(imgO)
+            } else if (Posicao[8] == "X" && Posicao[5] == "X" && Posicao[2] == "") {
+                Posicao[2] = "O"
+                Casas[2].appendChild(imgO)
+            } else if (Posicao[2] == "X" && Posicao[8] == "X" && Posicao[5] == "") {
+                Posicao[5] = "O"
+                Casas[5].appendChild(imgO)
+            }
+
+            //DIAGONAIS
+
+            //DIAGONAL 1
+            else if (Posicao[0] == "X" && Posicao[4] == "X" && Posicao[8] == "") {
+                Posicao[8] = "O"
+                Casas[8].appendChild(imgO)
+            } else if (Posicao[0] == "X" && Posicao[8] == "X" && Posicao[4] == "") {
+                Posicao[4] = "O"
+                Casas[4].appendChild(imgO)
+            } else if (Posicao[8] == "X" && Posicao[5] == "X" && Posicao[0] == "") {
+                Posicao[0] = "O"
+                Casas[0].appendChild(imgO)
+            }
+
+            //DIAGONAL 2
+            else if (Posicao[2] == "X" && Posicao[4] == "X" && Posicao[6] == "") {
+                Posicao[6] = "O"
+                Casas[6].appendChild(imgO)
+            } else if (Posicao[2] == "X" && Posicao[6] == "X" && Posicao[4] == "") {
+                Posicao[4] = "O"
+                Casas[4].appendChild(imgO)
+            } else if (Posicao[4] == "X" && Posicao[6] == "X" && Posicao[2] == "") {
+                Posicao[2] = "O"
+                Casas[2].appendChild(imgO)
+            } 
+            
+            else { // caso nenhuma jogada seja preciso
+
+                JogadaCPU = Math.round(Math.random() * 9)
+
+                if (Posicao[JogadaCPU] == "") {
+                    Posicao[JogadaCPU] = "O"
+                    Casas[JogadaCPU].appendChild(imgO)
+                    Casas[JogadaCPU].style.cursor = "default"
+                } else {
+                    CPUJoga()
+                }
+            }
             verifica()
             QuemJoga = 0
-        } else {
-            CPUJoga()
         }
     }
 }
+
 
 function verifica() {
 
@@ -242,5 +494,5 @@ function ExibirResultado() {
 
 }
 
-document.getElementById("reiniciaJogo").addEventListener("click", StartGame)
-document.getElementById("IniciaJogo").addEventListener('click', StartGame);
+document.getElementById("reiniciaJogo").addEventListener("click", Iniciar)
+document.getElementById("IniciaJogo").addEventListener("click", Iniciar);
